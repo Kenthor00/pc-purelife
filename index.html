@@ -1,0 +1,996 @@
+<title>Manuale PureLife OS</title>
+<meta name="description" content="Guida completa al PC di PureLife RP: oggetti, accesso, app, lavori collegati, DMV, staff e comandi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ── Token: stessa identità del sistema operativo (global.css di PureLife OS) ──
+   Design dark-first come il PC: :root = scuro, il chiaro è la "carta del documento ufficiale". */
+:root {
+  --bg: #0B0B0F;
+  --surface: #14141B;
+  --surface-2: #1A1A22;
+  --line: #26262E;
+  --line-soft: #1E1E26;
+  --text: #F2F0EA;
+  --muted: #8C8992;
+  --gold: #D4AF37;
+  --gold-ink: #F0D678;
+  --gold-wash: rgba(212, 175, 55, 0.10);
+  --gold-edge: rgba(212, 175, 55, 0.30);
+  --cyan: #00D4FF;
+  --ok: #61C56E;
+  --warn: #E8A93A;
+  --alert: #E24B4A;
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --screen: #07070A;
+
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F6F3EA;
+    --surface: #FFFDF7;
+    --surface-2: #F1ECDD;
+    --line: #DDD5BF;
+    --line-soft: #E9E2CF;
+    --text: #1B1A17;
+    --muted: #6B665A;
+    --gold: #8A6A12;
+    --gold-ink: #7A5C0C;
+    --gold-wash: rgba(138, 106, 18, 0.09);
+    --gold-edge: rgba(138, 106, 18, 0.35);
+    --cyan: #007C99;
+    --ok: #2F7D3A;
+    --warn: #A8650A;
+    --alert: #B3261E;
+    --shadow: 0 24px 60px rgba(60, 45, 10, 0.16), 0 6px 18px rgba(60, 45, 10, 0.10);
+    --screen: #0D0D12;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F6F3EA;
+  --surface: #FFFDF7;
+  --surface-2: #F1ECDD;
+  --line: #DDD5BF;
+  --line-soft: #E9E2CF;
+  --text: #1B1A17;
+  --muted: #6B665A;
+  --gold: #8A6A12;
+  --gold-ink: #7A5C0C;
+  --gold-wash: rgba(138, 106, 18, 0.09);
+  --gold-edge: rgba(138, 106, 18, 0.35);
+  --cyan: #007C99;
+  --ok: #2F7D3A;
+  --warn: #A8650A;
+  --alert: #B3261E;
+  --shadow: 0 24px 60px rgba(60, 45, 10, 0.16), 0 6px 18px rgba(60, 45, 10, 0.10);
+  --screen: #0D0D12;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 15.5px/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--gold-ink); text-decoration-color: var(--gold-edge); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+code, kbd, .mono { font-family: var(--mono); font-size: 0.86em; }
+code { color: var(--gold-ink); background: var(--gold-wash); padding: 1px 6px; border-radius: 5px; white-space: nowrap; }
+kbd { display: inline-block; min-width: 1.9em; text-align: center; padding: 1px 7px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; background: var(--surface-2); color: var(--text); font-size: 0.8em; }
+
+/* ── Impaginazione: indice fisso a sinistra (come la barra del PC) + manuale ── */
+.shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+.toc {
+  position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+  padding: 28px 18px 28px 26px; border-right: 1px solid var(--line-soft);
+}
+.toc__brand { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.toc__logo { font-family: var(--serif); font-weight: 600; font-size: 19px; color: var(--gold); letter-spacing: 0.3px; }
+.toc__os { font-family: var(--mono); font-size: 10.5px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+.toc__ver { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 22px; }
+.toc__group { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin: 18px 0 6px; }
+.toc a {
+  display: flex; align-items: center; gap: 9px; padding: 5px 10px; margin-left: -10px; border-radius: 8px;
+  color: var(--text); text-decoration: none; font-size: 14px; opacity: 0.78;
+  transition: background 160ms ease, opacity 160ms ease, color 160ms ease;
+}
+.toc a::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--line); flex: none; transition: background 160ms ease; }
+.toc a:hover { opacity: 1; background: var(--gold-wash); }
+.toc a.is-active { opacity: 1; color: var(--gold-ink); }
+.toc a.is-active::before { background: var(--gold); box-shadow: 0 0 0 3px var(--gold-wash); }
+
+main { padding: 40px clamp(20px, 4vw, 64px) 120px; min-width: 0; }
+.sec { padding: 64px 0 8px; border-top: 1px solid var(--line-soft); }
+.sec:first-of-type { border-top: 0; }
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.sec h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 3.4vw, 40px); line-height: 1.12; letter-spacing: -0.2px; }
+.lede { max-width: 66ch; color: var(--muted); font-size: 16.5px; margin-top: 14px; }
+.sec h3 { font-family: var(--sans); font-weight: 600; font-size: 18px; letter-spacing: -0.1px; margin: 40px 0 12px; }
+.sec h3 .tag { margin-left: 8px; vertical-align: 2px; }
+.prose { max-width: 70ch; display: grid; gap: 12px; }
+.prose ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.prose li::marker { color: var(--gold); }
+
+/* ── Apertura: lo schermo del PC ── */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; padding: 18px 0 56px; }
+.hero__kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: 2.6px; text-transform: uppercase; color: var(--muted); }
+.hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(42px, 5.6vw, 72px); line-height: 1.02; letter-spacing: -1px; margin: 14px 0 18px; }
+.hero h1 em { font-style: italic; font-weight: 500; color: var(--gold); }
+.hero__text { font-size: 17px; color: var(--muted); max-width: 52ch; }
+.hero__facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.fact { font-family: var(--mono); font-size: 12px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); background: var(--surface); }
+.fact b { color: var(--gold-ink); font-weight: 500; }
+
+.monitor { position: relative; }
+.monitor__frame { background: #1C1C22; border-radius: 16px; padding: 12px; box-shadow: var(--shadow); border: 1px solid #2A2A32; }
+.screen { position: relative; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background:
+  radial-gradient(120% 90% at 78% 12%, rgba(212,175,55,0.22), transparent 55%),
+  radial-gradient(90% 80% at 10% 100%, rgba(0,212,255,0.10), transparent 60%),
+  linear-gradient(160deg, #15131A 0%, #0A0A0E 70%);
+  color: #F5F5F5; font-family: var(--sans); }
+.scr__bar { display: flex; align-items: center; gap: 14px; height: 26px; padding: 0 12px; background: rgba(12,12,16,0.72); border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 10.5px; color: #C9C7CF; }
+.scr__bar .logo { font-family: var(--serif); color: #D4AF37; font-size: 12px; font-weight: 600; }
+.scr__bar .right { margin-left: auto; display: flex; gap: 10px; align-items: center; font-family: var(--mono); font-size: 9.5px; color: #9A98A2; }
+.wifi { display: inline-flex; gap: 1.5px; align-items: flex-end; height: 9px; }
+.wifi i { width: 2px; background: #00D4FF; border-radius: 1px; }
+.wifi i:nth-child(1) { height: 3px } .wifi i:nth-child(2) { height: 5px } .wifi i:nth-child(3) { height: 7px } .wifi i:nth-child(4) { height: 9px; opacity: .35 }
+.scr__win { position: absolute; left: 7%; top: 18%; width: 58%; height: 58%; background: rgba(26,26,34,0.92); border: 1px solid #2A2A33; border-radius: 9px; box-shadow: 0 18px 40px rgba(0,0,0,.5); overflow: hidden; }
+.scr__win-t { display: flex; align-items: center; gap: 5px; padding: 6px 9px; border-bottom: 1px solid #25252D; font-size: 9.5px; color: #B9B7C0; }
+.scr__win-t span { width: 7px; height: 7px; border-radius: 50%; background: #3A3A44; }
+.scr__win-t span:first-child { background: #E24B4A; }
+.scr__win-t b { margin-left: 6px; font-weight: 500; }
+.scr__mail { display: grid; grid-template-columns: 34% 1fr; height: calc(100% - 25px); }
+.scr__mail ul { list-style: none; margin: 0; padding: 6px; border-right: 1px solid #25252D; display: grid; gap: 4px; align-content: start; }
+.scr__mail li { font-size: 8.5px; padding: 4px 6px; border-radius: 5px; color: #A6A4AE; }
+.scr__mail li.on { background: rgba(212,175,55,0.14); color: #F0D678; }
+.scr__mail .body { padding: 9px 10px; display: grid; gap: 5px; align-content: start; }
+.scr__mail .line { height: 5px; border-radius: 3px; background: #2C2C35; }
+.scr__mail .subj { font-size: 9.5px; color: #F5F5F5; font-weight: 600; }
+.scr__mail .from { font-family: var(--mono); font-size: 8px; color: #D4AF37; }
+.scr__toast { position: absolute; right: 5%; top: 16%; width: 30%; padding: 8px 10px; border-radius: 8px; background: rgba(20,20,26,0.95); border: 1px solid rgba(212,175,55,0.35); font-size: 8.5px; color: #CFCDD5; animation: toast 5.5s var(--ease, ease) 0.6s infinite both; }
+.scr__toast b { display: block; color: #F0D678; font-size: 9px; margin-bottom: 2px; }
+@keyframes toast { 0%, 8% { transform: translateY(0); opacity: 1; } 70% { opacity: 1; } 85%, 100% { opacity: 1; transform: translateY(0); } }
+.scr__dock { position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%); display: flex; gap: 6px; padding: 5px 7px; background: rgba(14,14,18,0.78); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; }
+.scr__dock i { width: 17px; height: 17px; border-radius: 5px; background: #24242C; border: 1px solid #30303A; }
+.scr__dock i.g { background: linear-gradient(135deg, #D4AF37, #8C6F1C); border-color: #D4AF37; }
+.scr__dock i.c { background: linear-gradient(135deg, #00D4FF, #0A6A80); border-color: #1BB8D8; }
+.scr__machine { position: absolute; right: 12px; bottom: 9px; font-family: var(--mono); font-size: 8.5px; letter-spacing: 1.2px; color: #6F6D77; }
+.monitor__stand { width: 22%; height: 22px; margin: 0 auto; background: linear-gradient(#26262D, #17171C); clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%); }
+.monitor__cap { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); text-align: center; letter-spacing: 0.4px; }
+
+/* ── Elementi ricorrenti ── */
+.tag { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.6px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: var(--surface); white-space: nowrap; font-weight: 400; }
+.tag--gold { color: var(--gold-ink); border-color: var(--gold-edge); background: var(--gold-wash); }
+.tag--net { color: var(--cyan); border-color: color-mix(in srgb, var(--cyan) 40%, transparent); }
+.tag--ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+.tag--warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+.tag--alert { color: var(--alert); border-color: color-mix(in srgb, var(--alert) 45%, transparent); }
+
+.grid { display: grid; gap: 14px; }
+.grid--3 { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.grid--2 { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px 16px; display: grid; gap: 8px; align-content: start; }
+.item h4 { font-size: 15.5px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.item p, .item li { color: var(--muted); font-size: 14px; }
+.item ul { margin: 2px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.item li::marker { color: var(--gold); }
+.item__id { font-family: var(--mono); font-size: 11.5px; color: var(--gold-ink); }
+
+.note { max-width: 74ch; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; padding: 14px 16px; margin-top: 18px; border: 1px solid var(--gold-edge); background: var(--gold-wash); border-radius: 10px; font-size: 14.5px; }
+.note__k { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--gold-ink); padding-top: 2px; }
+.note--alert { border-color: color-mix(in srgb, var(--alert) 40%, transparent); background: color-mix(in srgb, var(--alert) 7%, transparent); }
+.note--alert .note__k { color: var(--alert); }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); margin-top: 6px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+th { font-family: var(--mono); font-weight: 500; font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); background: var(--surface-2); position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td.k { white-space: nowrap; font-weight: 500; }
+td.muted { color: var(--muted); }
+
+/* ── Matrice lavori × app (l'elemento firma della guida) ── */
+.matrix { min-width: 860px; }
+.matrix th:not(:first-child), .matrix td:not(:first-child) { text-align: center; }
+.matrix td:first-child { white-space: nowrap; }
+.matrix .job { font-weight: 600; }
+.matrix .jobs { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 2px; white-space: normal; max-width: 250px; }
+.dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px var(--gold-wash); }
+.dot--half { background: transparent; border: 2px solid var(--gold); box-shadow: none; }
+.dash { color: var(--line); }
+.legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; font-size: 13px; color: var(--muted); align-items: center; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+
+/* ── Flussi reali (qui la numerazione è una sequenza vera) ── */
+.flow { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 0; max-width: 78ch; counter-reset: step; }
+.flow li { counter-increment: step; display: grid; grid-template-columns: 44px 1fr; gap: 14px; position: relative; padding-bottom: 20px; }
+.flow li::before { content: counter(step); font-family: var(--mono); font-size: 12px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--gold-edge); color: var(--gold-ink); background: var(--surface); z-index: 1; }
+.flow li::after { content: ""; position: absolute; left: 15px; top: 30px; bottom: 0; width: 1px; background: var(--line); }
+.flow li:last-child::after { display: none; }
+.flow b { display: block; font-weight: 600; margin-bottom: 2px; }
+.flow span { color: var(--muted); font-size: 14.5px; }
+
+/* ── Documento di esempio (marcatori) ── */
+.paper { background: #FBF8EF; color: #1D1B16; border-radius: 6px; padding: 26px 28px; box-shadow: var(--shadow); font-family: Georgia, 'Times New Roman', serif; font-size: 13.5px; line-height: 1.55; border: 1px solid #E4DCC6; position: relative; overflow: hidden; }
+.paper__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; border-bottom: 2px solid #1D1B16; padding-bottom: 10px; margin-bottom: 14px; }
+.paper__org { font-family: var(--serif); font-weight: 700; font-size: 16px; letter-spacing: 0.4px; }
+.paper__sub { font-family: var(--mono); font-size: 9.5px; letter-spacing: 1.5px; color: #6E6756; text-transform: uppercase; }
+.paper__prot { font-family: var(--mono); font-size: 10px; color: #6E6756; text-align: right; }
+.paper h5 { font-family: var(--serif); font-size: 17px; margin: 0 0 10px; text-align: center; }
+.paper .field { display: grid; grid-template-columns: 130px 1fr; border-bottom: 1px dotted #B9AE92; padding: 3px 0; font-size: 12.5px; }
+.paper .field span:first-child { color: #6E6756; font-family: var(--sans); font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase; padding-top: 2px; }
+.paper .signed { margin-top: 14px; display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+.paper .sig { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 19px; color: #1F3A68; border-bottom: 1px solid #1D1B16; padding: 0 6px 2px; }
+.paper .sigcap { font-family: var(--mono); font-size: 9px; color: #6E6756; margin-top: 3px; }
+.stamp { width: 86px; height: 86px; border-radius: 50%; border: 2.5px solid rgba(160, 30, 30, 0.72); color: rgba(160, 30, 30, 0.78); display: grid; place-items: center; text-align: center; font-family: var(--mono); font-size: 8.5px; letter-spacing: 1px; line-height: 1.25; transform: rotate(-12deg); }
+.markers { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+
+/* ── Comandi ── */
+.cmd-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+.search { flex: 1 1 260px; max-width: 360px; font: 400 14px var(--sans); color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; }
+.search::placeholder { color: var(--muted); }
+.copy { font: 500 11px var(--mono); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 7px; padding: 3px 8px; cursor: pointer; }
+.copy:hover { color: var(--gold-ink); border-color: var(--gold-edge); }
+.count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+.foot { margin-top: 80px; padding-top: 22px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+@media (max-width: 1000px) {
+  .shell { grid-template-columns: 1fr; }
+  .toc { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line-soft); padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+  .toc__ver, .toc__group { display: none; }
+  .toc__brand { width: 100%; }
+  .toc a { margin-left: 0; font-size: 13px; }
+  .hero { grid-template-columns: 1fr; }
+  .markers { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="shell">
+  <nav class="toc" aria-label="Indice del manuale">
+    <div class="toc__brand"><span class="toc__logo">PureLife</span><span class="toc__os">OS</span></div>
+    <div class="toc__ver">Manuale · PureLife RP · Los Santos</div>
+
+    <div class="toc__group">Il computer</div>
+    <a href="#oggetti">Oggetti e posizionamento</a>
+    <a href="#accesso">Accesso e password</a>
+    <a href="#rete">Wi-Fi, stampante, USB</a>
+    <a href="#desktop">Scrivania e impostazioni</a>
+
+    <div class="toc__group">App per tutti</div>
+    <a href="#email">Email</a>
+    <a href="#banca">Banca e multe</a>
+    <a href="#documenti">Documenti e firme</a>
+    <a href="#purenet">PureNet ed eventi</a>
+    <a href="#azienda">Azienda, Corriere, Siti</a>
+    <a href="#giochi">Giochi</a>
+
+    <div class="toc__group">Lavori</div>
+    <a href="#lavori">Chi vede cosa</a>
+    <a href="#polizia">Polizia</a>
+    <a href="#sanita">Sanità</a>
+    <a href="#officina">Officina</a>
+    <a href="#concessionaria">Concessionaria</a>
+    <a href="#procura">Procura</a>
+    <a href="#governo">Governo</a>
+    <a href="#dmv">DMV, veicoli e patente</a>
+
+    <div class="toc__group">Gestione</div>
+    <a href="#staff">Amministrazione</a>
+    <a href="#comandi">Comandi</a>
+    <a href="#collegamenti">Risorse collegate</a>
+  </nav>
+
+  <main>
+    <!-- APERTURA -->
+    <header class="hero">
+      <div>
+        <div class="hero__kicker">PureLife RP · Guida del computer</div>
+        <h1>Un vero computer, <em>dentro</em> Los Santos.</h1>
+        <p class="hero__text">PureLife OS è il PC che si piazza in casa, in ufficio o in centrale. Ha una sua password, una rete Wi-Fi, una stampante e una chiavetta USB. Da qui ogni cittadino gestisce email, banca e documenti, e ogni lavoro ha il suo gestionale: polizia, ospedale, officine, tribunale, governo e DMV.</p>
+        <div class="hero__facts">
+          <span class="fact"><b>19</b> app</span>
+          <span class="fact"><b>8</b> siti PureNet</span>
+          <span class="fact"><b>6</b> categorie di lavori</span>
+          <span class="fact"><b>41</b> caselle email aziendali</span>
+        </div>
+      </div>
+      <figure class="monitor" style="margin:0">
+        <div class="monitor__frame">
+          <div class="screen" role="img" aria-label="Schermata di esempio di PureLife OS con la posta aperta">
+            <div class="scr__bar">
+              <span class="logo">PureLife</span><span>File</span><span>Rete</span><span>Finestra</span><span>Aiuto</span>
+              <span class="right"><span class="wifi" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Casa-Vinewood · 21:48</span>
+            </div>
+            <div class="scr__win">
+              <div class="scr__win-t"><span></span><span></span><span></span><b>Email</b></div>
+              <div class="scr__mail">
+                <ul>
+                  <li class="on">Posta in arrivo</li>
+                  <li>polizia@purelife.pl</li>
+                  <li>Inviate</li>
+                  <li>Confidenziale</li>
+                  <li>Cestino</li>
+                </ul>
+                <div class="body">
+                  <div class="from">sistema@purelife.pl</div>
+                  <div class="subj">DMV · Bollo pagato</div>
+                  <div class="line" style="width:92%"></div>
+                  <div class="line" style="width:80%"></div>
+                  <div class="line" style="width:64%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="scr__toast"><b>Nuova email</b>Procura · esito del ricorso</div>
+            <div class="scr__dock" aria-hidden="true"><i class="g"></i><i></i><i class="c"></i><i></i><i></i><i></i></div>
+            <div class="scr__machine">PL-7F3A-19C2</div>
+          </div>
+        </div>
+        <div class="monitor__stand"></div>
+        <figcaption class="monitor__cap">Esempio: la posta aperta e una notifica del tribunale</figcaption>
+      </figure>
+    </header>
+
+    <!-- OGGETTI -->
+    <section class="sec" id="oggetti">
+      <div class="eyebrow">Il computer</div>
+      <h2>Gli oggetti e come si piazzano</h2>
+      <p class="lede">Tutto parte da oggetti dell'inventario. Il PC non esiste finché qualcuno non lo mette giù: da quel momento è un oggetto nel mondo, con un codice macchina tipo <code>PL-XXXX-XXXX</code>.</p>
+
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item">
+          <h4>Computer <span class="item__id">purelife_pc</span></h4>
+          <p>Si usa l'oggetto o si scrive <code>/pc</code>. Massimo <b>3</b> per personaggio (gli admin non hanno limite).</p>
+        </article>
+        <article class="item">
+          <h4>Router Wi-Fi <span class="item__id">purelife_router</span></h4>
+          <p>Con <code>/router</code>. Massimo 2. Crea una rete con nome e password, copertura 30 m.</p>
+        </article>
+        <article class="item">
+          <h4>Stampante <span class="item__id">purelife_printer</span></h4>
+          <p>Con <code>/stampante</code>. Massimo 2. Si accoppia ai PC e stampa fogli veri nell'inventario.</p>
+        </article>
+        <article class="item">
+          <h4>Chiavetta USB <span class="item__id">purelife_usb</span></h4>
+          <p>Contiene 16 file. Si presta, si ruba e si sequestra: i file sopra sono copie.</p>
+        </article>
+        <article class="item">
+          <h4>Foglio stampato <span class="item__id">purelife_document</span></h4>
+          <p>Esce dalla stampante. Usandolo si legge il documento, anche firmato.</p>
+        </article>
+        <article class="item">
+          <h4>Schermo sottile <span class="item__id">purelife_screen</span> <span class="tag tag--gold">staff</span></h4>
+          <p>Un pannello piatto da mettere sopra i monitor delle mappe. Funziona come un PC completo. Con <code>/schermo</code>, massimo 4.</p>
+        </article>
+      </div>
+
+      <h3>Mettere giù il PC</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tasto</th><th>Cosa fa</th></tr></thead>
+          <tbody>
+            <tr><td class="k"><kbd>Invio</kbd> o <kbd>E</kbd></td><td>Conferma la posizione (l'anteprima trasparente segue la mira, massimo 6 m)</td></tr>
+            <tr><td class="k"><kbd>←</kbd> <kbd>→</kbd></td><td>Ruota il PC</td></tr>
+            <tr><td class="k"><kbd>G</kbd></td><td>Posizionamento preciso con le frecce 3D: <kbd>W</kbd> sposta, <kbd>R</kbd> ruota, <kbd>Alt</kbd> appoggia a terra</td></tr>
+            <tr><td class="k"><kbd>Backspace</kbd></td><td>Annulla e tieni l'oggetto</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Usarlo e riprenderlo</h3>
+      <div class="prose">
+        <ul>
+          <li><b>Aprire:</b> mira il PC con il target e scegli <b>Usa PC</b>, oppure premi <kbd>E</kbd> guardandolo entro 1,8 m. Il personaggio si gira verso lo schermo e scrive. Se ti allontani più di 5 m il PC si chiude; <kbd>ESC</kbd> lo chiude sempre.</li>
+          <li><b>Riprendere:</b> target <b>Raccogli PC</b>. Se il PC ha una password, chi la conosce può portarlo via (anche non essendo il proprietario: resta nei registri). Senza password lo raccoglie solo il proprietario.</li>
+          <li><b>Cosa vedono gli altri:</b> sullo schermo dell'oggetto compare una versione semplificata: salvaschermo, "accesso in corso", il nome dell'utente e l'icona dell'app aperta, brevi lampi per stampa e USB. Mai il contenuto o le password.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ACCESSO -->
+    <section class="sec" id="accesso">
+      <div class="eyebrow">Il computer</div>
+      <h2>Accesso e password</h2>
+      <p class="lede">Ogni PC ha la sua password, scelta al primo avvio. Chi non la conosce vede solo la schermata di blocco.</p>
+      <ol class="flow" style="margin-top:22px">
+        <li><div><b>Primo avvio</b><span>Il proprietario (o uno staff) crea la password: da 4 a 32 caratteri, più un suggerimento facoltativo che vedono tutti. Prima di allora gli altri leggono "PC non ancora configurato".</span></div></li>
+        <li><div><b>Accesso</b><span>Si digita la password. Dopo un errore compare il suggerimento; oltre 5 tentativi in un minuto il PC si blocca per un po'.</span></div></li>
+        <li><div><b>Scrivania</b><span>Parte il saluto "Bentornato" e il PC ricorda icone, sfondo, reti e stampanti di quella macchina.</span></div></li>
+        <li><div><b>Cambiarla</b><span>Impostazioni → Account, serve la password attuale. Se è persa, uno staff la azzera con <code>/plpcreset</code>.</span></div></li>
+      </ol>
+    </section>
+
+    <!-- RETE -->
+    <section class="sec" id="rete">
+      <div class="eyebrow">Il computer</div>
+      <h2>Wi-Fi, stampante e chiavetta</h2>
+      <p class="lede">Molte app lavorano online: senza rete restano aperte ma non caricano. Documenti, File e le impostazioni funzionano anche offline.</p>
+
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item">
+          <h4>La tua rete <span class="tag tag--net">Wi-Fi</span></h4>
+          <ul>
+            <li>Al piazzamento scegli nome (3–24 caratteri, unico) e password; vuota = rete aperta.</li>
+            <li>Segnale da 1 a 4 tacche in base alla distanza.</li>
+            <li>Il proprietario può rinominarla, cambiare password, spegnerla: tutti vengono disconnessi.</li>
+            <li>La connessione resta al PC anche chiudendolo.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>La rete di un altro <span class="tag tag--warn">lenta</span></h4>
+          <ul>
+            <li>Ci si collega solo sapendo la password.</li>
+            <li>La banda scende al 40% e le azioni online hanno fino a 3 s di ritardo.</li>
+            <li>Il PC avvisa: "rete altrui · lenta e tracciabile".</li>
+            <li>Tutto finisce nel registro di rete: la polizia può risalire al router.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Stampante</h4>
+          <ul>
+            <li>Impostazioni → Dispositivi → <b>Cerca stampanti</b> (entro 10 m) → <b>Accoppia</b>.</li>
+            <li>Accoppia solo il proprietario della stampante: così la si condivide con altri PC. Massimo 4 per PC.</li>
+            <li>Per stampare deve essere accesa e a meno di 10 m. LED azzurro = accesa, verde = accoppiata.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Chiavetta USB</h4>
+          <ul>
+            <li>Si inserisce dall'app File, usando l'oggetto vicino al PC, o col target <b>Chiavetta USB</b>.</li>
+            <li>Animazione con la chiavetta in mano: <kbd>X</kbd> annulla, così come allontanarsi o salire in auto.</li>
+            <li>Una chiavetta per PC; i file copiati sono copie vere.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="note"><span class="note__k">Manutenzione</span><span>Non ci sono bollette né corrente da pagare. Ogni 6 ore il server fa pulizia: registri di rete oltre 30 giorni, cestini di posta e file oltre 14 giorni, sessioni chiuse oltre 7 giorni, punteggi dei giochi oltre 180 giorni.</span></div>
+    </section>
+
+    <!-- DESKTOP -->
+    <section class="sec" id="desktop">
+      <div class="eyebrow">Il computer</div>
+      <h2>Scrivania e impostazioni</h2>
+      <p class="lede">La barra in alto ha i menu File, Rete, Finestra e Aiuto; a destra lo stato della chiavetta, del Wi-Fi e l'ora. Le finestre si trascinano, si ridimensionano e si agganciano a metà o a un quarto di schermo.</p>
+
+      <div class="grid grid--2" style="margin-top:26px">
+        <article class="item">
+          <h4>Sulla scrivania</h4>
+          <ul>
+            <li>Icone di app, cartelle, documenti e Cestino su una griglia; la disposizione resta salvata sul PC.</li>
+            <li><kbd>Invio</kbd> o doppio clic apre, <kbd>F2</kbd> rinomina, <kbd>Canc</kbd> manda nel Cestino.</li>
+            <li>Tasto destro: nuova cartella, nuovo documento, cambia sfondo.</li>
+            <li>File → <b>Blocca schermo</b> torna alla password senza spegnere.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Impostazioni</h4>
+          <ul>
+            <li><b>Sfondo:</b> 5 sfondi o un'immagine da link https. Si vede anche sullo schermo dell'oggetto.</li>
+            <li><b>Dispositivi:</b> stampanti accoppiate.</li>
+            <li><b>Account:</b> nome, codice macchina, ruolo (Proprietario / Ospite), cambio password.</li>
+            <li><b>Suoni:</b> attivi, volume, prova.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- EMAIL -->
+    <section class="sec" id="email">
+      <div class="eyebrow">App per tutti</div>
+      <h2>Email</h2>
+      <p class="lede">La posta della città. Ogni lavoro ha la sua casella aziendale automatica, e le email di sistema (multe, DMV, banca, tribunale) arrivano anche come notifica sul telefono.</p>
+
+      <div class="table-wrap" style="margin-top:24px">
+        <table>
+          <thead><tr><th>Tipo di casella</th><th>Indirizzo</th><th>Chi la usa</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Aziendale</td><td><code>nomejob@purelife.pl</code></td><td class="muted">Creata da sola per ogni lavoro. Appare per prima, scrivi a nome dell'azienda; resta all'azienda quando cambiano i dipendenti. Tutti i colleghi online ricevono la notifica.</td></tr>
+            <tr><td class="k">Uffici pubblici</td><td><code>polizia@</code> <code>ems@</code> <code>ospedale@</code> <code>procura@</code> <code>governo@</code></td><td class="muted">Indirizzi "belli" per polizia, ambulanza, ospedale, tribunale e Stato.</td></tr>
+            <tr><td class="k">Personale</td><td><code>nome@mail.pl</code></td><td class="muted">Fino a 3 caselle tra personali e di attività.</td></tr>
+            <tr><td class="k">Di attività</td><td><code>nome@lavoro.pl</code></td><td class="muted">Col dominio del proprio lavoro.</td></tr>
+            <tr><td class="k">Assistenza</td><td><code>assistenza@purelife.pl</code></td><td class="muted">Arriva davvero allo staff, con risposta automatica.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <ul>
+          <li>Cartelle: Posta in arrivo, Archivio, Bozze, Inviate, Confidenziale, Cestino. Ricerca, filtri per data e densità della lista.</li>
+          <li>Rispondi, Rispondi a tutti, Inoltra; allegati da Documenti e fino a 4 immagini; salva un allegato in Ricevuti.</li>
+          <li>Limiti: 8 destinatari, oggetto 120 caratteri, testo 6000, massimo 8 invii al minuto. Un indirizzo inesistente torna indietro da <code>postmaster@purelife.pl</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BANCA -->
+    <section class="sec" id="banca">
+      <div class="eyebrow">App per tutti</div>
+      <h2>Banca e multe</h2>
+      <p class="lede">Conto, contanti, movimenti e bonifici, con in più le proprie multe della polizia e la possibilità di fare ricorso al tribunale.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Panoramica</h4><p>Saldo in banca, contanti e IBAN. Chi ha il grado <code>boss</code> vede anche il conto aziendale e può versare o prelevare.</p></article>
+        <article class="item"><h4>Movimenti e bonifici</h4><p>Storico dalla banca. Bonifico da $1 a $250.000 cercando il nome o l'email, anche verso chi è offline; rubrica dei contatti salvati. Il destinatario riceve notifica ed email.</p></article>
+        <article class="item"><h4>Le mie multe</h4><p>Le multe ricevute. Per ognuna un <b>ricorso</b>: annullamento o riduzione, motivazione di almeno 20 caratteri. Stato: in esame, accolto, accolto in parte, respinto.</p></article>
+      </div>
+    </section>
+
+    <!-- DOCUMENTI -->
+    <section class="sec" id="documenti">
+      <div class="eyebrow">App per tutti</div>
+      <h2>Documenti, firme e stampa</h2>
+      <p class="lede">Il cuore del PC. Contratti, verbali, referti e sentenze si compilano con campi guidati e diventano fogli ufficiali, con intestazione, timbro e firme vere dei giocatori.</p>
+
+      <div class="markers" style="margin-top:28px">
+        <div>
+          <h3 style="margin-top:0">Modelli pronti</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Categoria</th><th>Modelli</th></tr></thead>
+              <tbody>
+                <tr><td class="k">Contratti</td><td class="muted">Compravendita veicolo e generica, locazione, prestito, riservatezza, cessione quote, sponsorizzazione</td></tr>
+                <tr><td class="k">Lavoro</td><td class="muted">Contratto, assunzione, licenziamento, ordine di servizio, referenze</td></tr>
+                <tr><td class="k">Finanza</td><td class="muted">Fattura, preventivo, ricevuta, rendiconto</td></tr>
+                <tr><td class="k">Legale</td><td class="muted">Dichiarazione sostitutiva, denuncia, testamento, liberatoria</td></tr>
+                <tr><td class="k">Ufficio · Personale</td><td class="muted">Verbale di riunione e di consegna, lettera formale, avviso, curriculum, lettera, invito</td></tr>
+                <tr><td class="k">Solo Sanità <span class="tag tag--gold">ems</span></td><td class="muted">Referto, certificato medico, cartella clinica, prescrizione, certificato di morte</td></tr>
+                <tr><td class="k">Solo Polizia <span class="tag tag--gold">police</span></td><td class="muted">Contestazione, rapporto di servizio, richiesta di mandato, sequestro, casellario</td></tr>
+                <tr><td class="k">Solo Governo <span class="tag tag--gold">stato</span></td><td class="muted">Permesso pubblico, ordinanza, licenza commerciale, decreto / nomina</td></tr>
+                <tr><td class="k">Solo Procura <span class="tag tag--gold">doj</span></td><td class="muted">Procura, citazione, mandato, archiviazione, sentenza</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <figure style="margin:0">
+          <div class="paper" aria-label="Esempio di documento firmato">
+            <div class="paper__head">
+              <div><div class="paper__org">DMV · San Andreas</div><div class="paper__sub">Department of Motor Vehicles</div></div>
+              <div class="paper__prot">Prot. DMV-2026-0412<br>13/09/2026</div>
+            </div>
+            <h5>Atto di trasferimento di proprietà</h5>
+            <div class="field"><span>Targa</span><span>8KRT 219</span></div>
+            <div class="field"><span>Veicolo</span><span>Ubermacht Sentinel</span></div>
+            <div class="field"><span>Venditore</span><span>Marco Ferri</span></div>
+            <div class="field"><span>Acquirente</span><span>Giulia Russo</span></div>
+            <div class="field"><span>Prezzo</span><span>$ 42.000 · tassa $ 840</span></div>
+            <div class="signed">
+              <div><div class="sig">Giulia Russo</div><div class="sigcap">Controparte · firma digitale · a91f…</div></div>
+              <div class="stamp">DMV<br>REGISTRATO<br>SAN ANDREAS</div>
+            </div>
+          </div>
+          <figcaption class="monitor__cap">Un atto del DMV con firma e timbro, come esce in stampa</figcaption>
+        </figure>
+      </div>
+
+      <h3>Firme e controfirme</h3>
+      <ol class="flow">
+        <li><div><b>Firma digitale</b><span>Chi scrive il documento lo firma: nome, data e un codice. Se il testo cambia dopo, la firma risulta non valida.</span></div></li>
+        <li><div><b>Richiesta di controfirma</b><span>Il proprietario la chiede a un giocatore entro 6 m, con un ruolo: Autore, Controparte, Testimone o Pubblico ufficiale. La richiesta dura 120 secondi.</span></div></li>
+        <li><div><b>Accettazione</b><span>Chi firma deve essere ancora vicino. Fino a 12 firme; la propria si può ritirare entro 10 minuti.</span></div></li>
+        <li><div><b>Stampa</b><span>Le firme finiscono sul foglio. Se qualcuno modifica il testo, tutte le firme mostrano "NON PIÙ VALIDA".</span></div></li>
+      </ol>
+
+      <div class="grid grid--2" style="margin-top:14px">
+        <article class="item">
+          <h4>Aspetto del foglio</h4>
+          <p>Stili: Personale, LSPD, Sceriffo, Sanità, Governo, Tribunale, Azienda, Studio legale, Notaio, DMV, Perizia tecnica. Carta avorio, bianca, grigia o riciclata; colore, filigrana, timbro tondo, rettangolare o ovale.</p>
+        </article>
+        <article class="item">
+          <h4>Modelli personali</h4>
+          <p>Fino a 40 modelli propri con 24 campi. Si tengono privati o si condividono con tutta l'azienda (dal grado 3, scegliendo da che grado si vedono).</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PURENET -->
+    <section class="sec" id="purenet">
+      <div class="eyebrow">App per tutti</div>
+      <h2>PureNet, l'internet della città</h2>
+      <p class="lede">Un browser con schede, preferiti e cronologia. I siti pubblici sono dei servizi; tutti gli altri li costruiscono gli sviluppatori web del lavoro <code>creatore_siti</code>.</p>
+      <div class="table-wrap" style="margin-top:24px">
+        <table>
+          <thead><tr><th>Sito</th><th>A cosa serve</th></tr></thead>
+          <tbody>
+            <tr><td class="k"><code>purelife.pl</code></td><td class="muted">Motore di ricerca: servizi pubblici, siti delle attività in ordine di visite, cittadini online</td></tr>
+            <tr><td class="k"><code>governo.pl</code></td><td class="muted">Uffici pubblici e rubrica di tutte le caselle email dei lavori, moduli pronti (denuncia, liberatoria, compravendita…), albo pretorio con gli atti pubblicati, licenze commerciali attive</td></tr>
+            <tr><td class="k"><code>dmv.pl</code></td><td class="muted">Il portale del cittadino: i miei veicoli, bollo, patente e punti, vendita del veicolo, pratiche e ricevute. Anche come <code>automobilista.pl</code></td></tr>
+            <tr><td class="k"><code>eventi.pl</code></td><td class="muted">Calendario degli eventi in città, per categoria e giorno, con "Scrivi all'organizzatore"</td></tr>
+            <tr><td class="k"><code>leggi.pl</code></td><td class="muted">Il codice penale della polizia: capitoli, articoli, multa e mesi</td></tr>
+            <tr><td class="k"><code>wiki.pl</code></td><td class="muted">Guida al PC, ai quartieri e ai servizi</td></tr>
+            <tr><td class="k"><code>speedtest.pl</code></td><td class="muted">Ping, download e upload della connessione in uso</td></tr>
+            <tr><td class="k"><code>siti.pl</code></td><td class="muted">Apre l'app Siti; i siti delle attività sono <code>nome.pl</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note"><span class="note__k">eventi.pl</span><span>Pubblica chi ha un lavoro in servizio (niente disoccupati né <code>off_</code>): l'evento porta il nome e la casella dell'azienda. Date fino a 120 giorni avanti, massimo 12 eventi futuri per azienda. Categorie: Musica, Locali e serate, Sport, Mercati e fiere, Cultura, Città e Comune. Lo tolgono i colleghi o lo staff.</span></div>
+    </section>
+
+    <!-- AZIENDA, CORRIERE, SITI -->
+    <section class="sec" id="azienda">
+      <div class="eyebrow">App per tutti</div>
+      <h2>Azienda, Corriere e Siti</h2>
+      <p class="lede">Tre app aperte a tutti che però prendono vita con un lavoro: la gestione dell'attività, gli ordini di merce e l'agenzia web.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item">
+          <h4>Azienda <span class="tag">qualsiasi lavoro</span></h4>
+          <p>Il gestionale dell'attività, collegato al boss menu:</p>
+          <ul>
+            <li>Bacheca, turni, dipendenti, contratti di assunzione.</li>
+            <li>Divise: salva il vestito che indossi, "Indossa" per i colleghi.</li>
+            <li>Gradi e permessi, stipendi, buste paga.</li>
+            <li>Cassa e bilancio, fatture, negozio e ordini, profilo società, registro.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Corriere <span class="tag">qualsiasi lavoro</span></h4>
+          <p>Il negozio del corriere, identico al laptop del magazzino:</p>
+          <ul>
+            <li><b>Ordina merce</b> pagando dal conto aziendale; il furgone parte dalla sede.</li>
+            <li><b>Parte quando arrivo:</b> l'ordine aspetta e parte da solo quando sei entro 120 m; dopo 20 minuti si annulla senza addebito.</li>
+            <li>Consegne, bolle da ristampare; il capo decide chi può ordinare, vedere, annullare, ristampare.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Siti <span class="tag tag--gold">creatore_siti</span></h4>
+          <p>L'agenzia web della città:</p>
+          <ul>
+            <li>Fino a 40 siti per sviluppatore, 25 tipi di sezioni (menu, orari, galleria, prenotazioni, recensioni…).</li>
+            <li>Tema, anteprima computer/tablet/telefono, annulla e ripeti.</li>
+            <li><b>Consegna al cliente</b> vicino o all'azienda; statistiche di visite.</li>
+            <li>Il cliente vede il suo sito e le visite, lo staff modera.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- GIOCHI -->
+    <section class="sec" id="giochi">
+      <div class="eyebrow">App per tutti</div>
+      <h2>Giochi</h2>
+      <p class="lede">Una sala giochi dentro il PC, con classifiche e profilo. Le partite online si fanno in lobby con chat e rivincita.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Da soli</h4><p>Serpente d'Oro, Vinewood 2048, Cassaforte, Memoria, Ladro di Vinewood, Linea Rossa, Torre di Los Santos, Ritmo Neon.</p></article>
+        <article class="item"><h4>In due</h4><p>Filotto, Battaglia Navale, Tris Reale, Dama Reale.</p></article>
+        <article class="item"><h4>In gruppo</h4><p>Quiz PureLife, Poker PureLife (fiches virtuali), Sfida di Parole, PureStrike e PureStrike 3D, Rapina Coordinata, Corsa dei Corrieri, Asta al Buio (in palio solo le puntate dei giocatori).</p></article>
+      </div>
+    </section>
+
+    <!-- LAVORI -->
+    <section class="sec" id="lavori">
+      <div class="eyebrow">Lavori collegati</div>
+      <h2>Chi vede cosa</h2>
+      <p class="lede">Le app dei reparti compaiono solo a chi fa quel lavoro, e il server ricontrolla il permesso a ogni azione. Le officine create in gioco dal pannello meccanici vengono riconosciute da sole.</p>
+
+      <div class="table-wrap" style="margin-top:24px">
+        <table class="matrix">
+          <thead>
+            <tr><th>Categoria e lavori</th><th>Polizia</th><th>Sanità</th><th>Officina</th><th>Concess.</th><th>Procura</th><th>Governo</th><th>DMV</th><th>Siti · crea</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="job">Forze dell'ordine</span><span class="jobs">police · fib · sheriff</span></td><td><span class="dot" title="Accesso completo"></span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot dot--half" title="Accesso parziale"></span></td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Sanità</span><span class="jobs">ambulance · ems1</span></td><td class="dash">—</td><td><span class="dot"></span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Officine</span><span class="jobs">mechanic · lscustoms · pitstop · afterlife · exotic · usato · m_lost · m_serpents · tuning</span></td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot dot--half"></span></td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Concessionarie</span><span class="jobs">cardealer · aurum · vespucci_dealership · palomino_dealership</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td><td class="dash">—</td><td class="dash">—</td><td><span class="dot dot--half"></span></td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Tribunale</span><span class="jobs">doj</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Governo</span><span class="jobs">stato</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td><td><span class="dot"></span></td><td class="dash">—</td></tr>
+            <tr><td><span class="job">Agenzia web</span><span class="jobs">creatore_siti</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td></tr>
+            <tr><td><span class="job">Staff</span><span class="jobs">amministrazione PureLife</span></td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td><span class="dot"></span></td><td><span class="dot dot--half"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><span class="dot"></span> accesso completo</span>
+        <span><span class="dot dot--half"></span> solo le parti del proprio ruolo</span>
+        <span>Email, Banca, Documenti, File, PureNet, Azienda, Corriere e Giochi: tutti</span>
+      </div>
+    </section>
+
+    <!-- POLIZIA -->
+    <section class="sec" id="polizia">
+      <div class="eyebrow">Lavori · police, fib, sheriff</div>
+      <h2>Polizia</h2>
+      <p class="lede">Il terminale della centrale, collegato al sistema di polizia: rapporti, multe e schede dei cittadini sono gli stessi del tablet. Serve il grado minimo del tablet; per scrivere, il grado di scrittura.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Panoramica</h4><p>Grafici di rapporti e multe, totale non pagato, casi aperti, agenti online.</p></article>
+        <article class="item">
+          <h4>Compila</h4>
+          <ul>
+            <li>Rapporti guidati: intervento, arresto, sequestro, perquisizione, incidente, denuncia, informativa, fermo, fine turno.</li>
+            <li><b>Multa:</b> articoli del codice × quantità, sconto dell'agente fino al 50%.</li>
+            <li>Note fissabili; denuncia firmabile da stampare o dare su chiavetta.</li>
+          </ul>
+        </article>
+        <article class="item"><h4>Rapporti e multe</h4><p>Ricerca e filtri per tag, salvataggio nei documenti, invio al governo o via email. Multe non pagate, pagate, tutte.</p></article>
+        <article class="item">
+          <h4>Scheda cittadino</h4>
+          <ul>
+            <li>Ricercato e pericoloso, note, rapporti, multe e totale da pagare, licenze.</li>
+            <li>Pena residua in carcere.</li>
+            <li>Veicoli con lo stato DMV.</li>
+            <li><b>Patente:</b> punti e storico, con <b>Decurta punti</b> e <b>Sospendi</b>.</li>
+          </ul>
+        </article>
+        <article class="item"><h4>Ricercati e BOLO</h4><p>Persone ricercate e veicoli sospetti segnalati.</p></article>
+        <article class="item"><h4>Codice penale e personale</h4><p>Articoli con multa e mesi. Agenti, minuti di servizio negli ultimi 7 giorni, chi è in servizio adesso.</p></article>
+      </div>
+    </section>
+
+    <!-- SANITA -->
+    <section class="sec" id="sanita">
+      <div class="eyebrow">Lavori · ambulance, ems1</div>
+      <h2>Sanità</h2>
+      <p class="lede">Collegata al tablet EMS: referti, ricette, cartelle e posti letto sono gli stessi. I referti sigillati li legge per intero solo chi li ha scritti o chi ha i permessi per psichiatria e autopsie.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item">
+          <h4>Referti</h4>
+          <p>15 tipi: pronto soccorso, traumatologico, tossicologico, ferite d'arma, psichiatrico, autoptico, ricovero, dimissione, morte, infortunio, idoneità porto d'armi, vaccinazione e altri.</p>
+          <p><span class="tag tag--alert">Rosso</span> <span class="tag tag--warn">Giallo</span> <span class="tag tag--ok">Verde</span> <span class="tag">Bianco</span></p>
+        </article>
+        <article class="item"><h4>Ricette</h4><p>Dal prontuario del tablet (circa 80 farmaci): dose, frequenza, giorni di validità, note.</p></article>
+        <article class="item"><h4>Cartelle cliniche</h4><p>Gruppo sanguigno, allergie, patologie croniche, farmaci, contatto di emergenza; referti, ricette attive e scadute, letto attuale.</p></article>
+        <article class="item"><h4>Posti letto</h4><p>Assegna un paziente o libera il letto: stato <code>libero</code> / <code>occupato</code>, lo stesso del tablet.</p></article>
+        <article class="item"><h4>Statistiche e prontuario</h4><p>Triage nel tempo e per ora, pazienti frequenti, farmaci più prescritti.</p></article>
+        <article class="item"><h4>Personale</h4><p>Turni del personale sanitario. Ogni referto si salva nei documenti o si invia al governo.</p></article>
+      </div>
+    </section>
+
+    <!-- OFFICINA -->
+    <section class="sec" id="officina">
+      <div class="eyebrow">Lavori · officine</div>
+      <h2>Officina</h2>
+      <p class="lede">Il gestionale dei meccanici, collegato alle officine del server e al registro DMV: una revisione fatta qui compare subito sul libretto del veicolo.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Lavori in corso</h4><p>Gli ordini di tuning: da iniziare, in lavorazione, montato e da consegnare.</p></article>
+        <article class="item">
+          <h4>Nuovo rapporto</h4>
+          <ul>
+            <li>Tagliando, riparazione, carrozzeria, tuning, revisione, soccorso stradale.</li>
+            <li>Ricambi × prezzo, manodopera, ore, km, garanzia.</li>
+            <li>Scrive lo storico del veicolo ed emette la fattura da incassare.</li>
+          </ul>
+        </article>
+        <article class="item"><h4>Fatture, squadra, magazzino</h4><p>Fatture da incassare e pagate, i meccanici, i pezzi di usura (anche elettrici) e il catalogo del corriere.</p></article>
+      </div>
+    </section>
+
+    <!-- CONCESSIONARIA -->
+    <section class="sec" id="concessionaria">
+      <div class="eyebrow">Lavori · concessionarie</div>
+      <h2>Concessionaria</h2>
+      <p class="lede">Showroom, vendite e clienti della concessionaria, con i contratti pronti da firmare.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Showroom</h4><p>Modelli disponibili e da ordinare, con foto e scheda veicolo.</p></article>
+        <article class="item"><h4>Contratti</h4><p>Preventivo, compravendita, valutazione usato e permuta, verbale di consegna, certificato di garanzia.</p></article>
+        <article class="item"><h4>Vendite e clienti</h4><p>Storico vendite, schede clienti e classifica dei venditori.</p></article>
+      </div>
+    </section>
+
+    <!-- PROCURA -->
+    <section class="sec" id="procura">
+      <div class="eyebrow">Lavori · doj</div>
+      <h2>Procura e tribunale</h2>
+      <p class="lede">Dove si decidono i ricorsi dei cittadini, si scrivono gli atti e si fissano le udienze. Ogni decisione arriva per email alla persona interessata.</p>
+      <h3>Come si decide un ricorso</h3>
+      <ol class="flow">
+        <li><div><b>Il cittadino fa ricorso</b><span>Da Banca → Le mie multe. I magistrati in servizio ricevono la notifica.</span></div></li>
+        <li><div><b>Il magistrato apre il fascicolo</b><span>Vede la multa, il rapporto della polizia e i ricorsi precedenti della stessa persona.</span></div></li>
+        <li><div><b>Decide con una motivazione</b><span><b>Accolto:</b> multa azzerata e rimborso se già pagata. <b>Ridotto:</b> nuovo importo e rimborso della differenza. <b>Respinto.</b></span></div></li>
+      </ol>
+      <div class="grid grid--3" style="margin-top:8px">
+        <article class="item"><h4>Casellario</h4><p>Per ogni persona: multe e mesi, ricorsi, atti a suo carico, udienze.</p></article>
+        <article class="item"><h4>Atti</h4><p>Citazione, mandato, archiviazione, sentenza. Salvabili come documento del Tribunale.</p></article>
+        <article class="item"><h4>Udienze</h4><p>Data, aula, tipo e persona convocata; esito conclusa, rinviata o annullata.</p></article>
+      </div>
+    </section>
+
+    <!-- GOVERNO -->
+    <section class="sec" id="governo">
+      <div class="eyebrow">Lavori · stato</div>
+      <h2>Governo</h2>
+      <p class="lede">Il Palazzo dello Stato di San Andreas: fondi pubblici, atti ufficiali, licenze commerciali e registro delle imprese.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Palazzo</h4><p>Saldo dei fondi pubblici, incassi del DMV a 7 e 30 giorni, atti, licenze attive, numero di cittadini.</p></article>
+        <article class="item"><h4>Atti e albo</h4><p>Ordinanze, decreti e nomine, avvisi, delibere di spesa. Si pubblicano sull'albo di <code>governo.pl</code> o restano in bozza.</p></article>
+        <article class="item"><h4>Licenze</h4><p>Rilascio con numero <code>LC-2026-001</code> ed email al titolare, revoca motivata.</p></article>
+        <article class="item"><h4>Imprese</h4><p>Ogni lavoro: dipendenti, online adesso, saldo del conto aziendale, licenza sì o no. Totale cittadini e disoccupati.</p></article>
+        <article class="item"><h4>DMV</h4><p>Ufficio incassi, registro veicoli, fermi e correzioni d'ufficio del bollo e della revisione.</p></article>
+      </div>
+    </section>
+
+    <!-- DMV -->
+    <section class="sec" id="dmv">
+      <div class="eyebrow">Lavori · DMV</div>
+      <h2>DMV: veicoli, bollo, vendite e patente</h2>
+      <p class="lede">Il DMV tiene il libretto di ogni veicolo. I cittadini lo usano da <code>dmv.pl</code>; polizia, governo, officine e concessionarie hanno il terminale d'ufficio.</p>
+
+      <div class="table-wrap" style="margin-top:24px">
+        <table>
+          <thead><tr><th>Voce</th><th>Regola</th></tr></thead>
+          <tbody>
+            <tr><td class="k">Bollo</td><td>1,5% del prezzo del veicolo, tra <b>$250</b> e <b>$6.000</b>, ogni 30 giorni; si possono anticipare fino a 3 periodi. Va allo Stato.</td></tr>
+            <tr><td class="k">Revisione</td><td>Valida 60 giorni (auto nuove 120). La registra solo un'officina: frenatura, luci, pneumatici, sterzo, sospensioni, emissioni, carrozzeria, cinture. "Da ripetere" dà 7 giorni.</td></tr>
+            <tr><td class="k">Tassa di passaggio</td><td>2% del prezzo, minimo <b>$150</b>, pagata dall'acquirente.</td></tr>
+            <tr><td class="k">Fermo amministrativo</td><td>Messo da polizia o governo con motivo; sblocco a pagamento (di solito $1.500). Il veicolo va al deposito <b>Impound A</b>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Vendere un veicolo a un altro giocatore</h3>
+      <ol class="flow">
+        <li><div><b>Il venditore apre dmv.pl → Trasferimento</b><span>Sceglie il veicolo, l'acquirente tra i giocatori entro 6 m, il prezzo. Il veicolo non deve essere sotto fermo né in finanziamento, e il bollo deve essere pagato.</span></div></li>
+        <li><div><b>L'acquirente riceve la richiesta</b><span>Una finestra con prezzo, tassa e totale: <b>Firmo e pago</b> o <b>Rifiuto</b>, 90 secondi per decidere.</span></div></li>
+        <li><div><b>Il server ricontrolla</b><span>Entrambi ancora vicini, soldi sufficienti.</span></div></li>
+        <li><div><b>Passaggio fatto</b><span>Soldi al venditore, tassa allo Stato, veicolo e chiavi all'acquirente. Tutti e due ricevono l'atto nei Documenti e per email. Dal garage non si può più passare un veicolo: si passa solo dal DMV.</span></div></li>
+      </ol>
+
+      <h3>Patente a punti</h3>
+      <div class="grid grid--2">
+        <article class="item">
+          <h4>Punti <span class="tag tag--gold">12 di partenza</span></h4>
+          <ul>
+            <li>Polizia, governo o staff tolgono da 1 a 10 punti per infrazione, con motivo.</li>
+            <li>A <b>0 punti</b> scatta la sospensione automatica di 30 giorni.</li>
+            <li>Il cittadino vede punti e storico su dmv.pl → Patente e punti, e riceve un'email a ogni cambio.</li>
+          </ul>
+        </article>
+        <article class="item">
+          <h4>Sospensione <span class="tag tag--alert">patente ritirata</span></h4>
+          <ul>
+            <li>La polizia sospende fino a 30 giorni; giudice, governo e staff fino a 365.</li>
+            <li>Le licenze di guida vengono tolte davvero; a fine sospensione tornano con 12 punti.</li>
+            <li>Una patente rifatta durante la sospensione viene ritirata di nuovo.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="table-wrap" style="margin-top:14px">
+        <table>
+          <thead><tr><th>Documento</th><th>Classe</th></tr></thead>
+          <tbody>
+            <tr><td class="k">patente_b</td><td>C · Autoveicoli</td></tr>
+            <tr><td class="k">patente_a</td><td>M · Motocicli</td></tr>
+            <tr><td class="k">patente_c</td><td>A · Veicoli commerciali</td></tr>
+            <tr><td class="k">patente_nautica · patente_volo</td><td>Nautica · Pilota</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STAFF -->
+    <section class="sec" id="staff">
+      <div class="eyebrow">Gestione</div>
+      <h2>Amministrazione</h2>
+      <p class="lede">L'app dello staff: vede tutti i PC, le reti e i registri, e ogni azione dello staff finisce a sua volta in un registro con nome e ora.</p>
+      <div class="grid grid--3" style="margin-top:26px">
+        <article class="item"><h4>Centro di controllo</h4><p>Allarmi: PC portati via, password Wi-Fi sbagliate, PC su reti altrui, richieste di assistenza, PC senza password, reti aperte.</p></article>
+        <article class="item"><h4>Mappa dal vivo</h4><p>PC, router, stampanti e giocatori sulla mappa, con teletrasporto.</p></article>
+        <article class="item"><h4>Computer</h4><p>Filtri (in uso, in rete, senza password, schermi sottili), reset password, disconnessione, rimozione confermando il codice macchina.</p></article>
+        <article class="item"><h4>Reti e stampanti</h4><p>Accendi e spegni router e stampanti, disconnetti tutti, rimuovi.</p></article>
+        <article class="item"><h4>Giocatori e registri</h4><p>Scheda personaggio (PC, email, file, siti, movimenti bancari) e registro di rete filtrabile.</p></article>
+        <article class="item"><h4>PureNet, assistenza, annunci</h4><p>Moderazione di eventi e siti, risposta alle richieste di assistenza, annunci su tutti i PC (anche in gioco).</p></article>
+      </div>
+    </section>
+
+    <!-- COMANDI -->
+    <section class="sec" id="comandi">
+      <div class="eyebrow">Gestione</div>
+      <h2>Comandi</h2>
+      <p class="lede">I comandi del PC. Il tasto per usare il PC è <kbd>E</kbd> e si può cambiare nelle impostazioni dei tasti di FiveM.</p>
+      <div class="cmd-tools">
+        <input class="search" id="cmdSearch" type="search" placeholder="Cerca un comando o cosa fa…" aria-label="Cerca tra i comandi">
+        <span class="count" id="cmdCount"></span>
+      </div>
+      <div class="table-wrap" style="margin-top:12px">
+        <table id="cmdTable">
+          <thead><tr><th>Comando</th><th>Chi</th><th>Cosa fa</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="k"><code>/pc</code></td><td><span class="tag">tutti</span></td><td>Piazza un computer</td><td><button class="copy" data-cmd="/pc">Copia</button></td></tr>
+            <tr><td class="k"><code>/router</code></td><td><span class="tag">tutti</span></td><td>Piazza un router Wi-Fi</td><td><button class="copy" data-cmd="/router">Copia</button></td></tr>
+            <tr><td class="k"><code>/stampante</code></td><td><span class="tag">tutti</span></td><td>Piazza una stampante</td><td><button class="copy" data-cmd="/stampante">Copia</button></td></tr>
+            <tr><td class="k"><code>/usbanim insert</code></td><td><span class="tag">tutti</span></td><td>Prova l'animazione della chiavetta (anche <code>remove</code>)</td><td><button class="copy" data-cmd="/usbanim insert">Copia</button></td></tr>
+            <tr><td class="k"><code>/plpvp</code></td><td><span class="tag">tutti</span></td><td>Diagnosi in F8 sul perché non si riesce a sparare ai giocatori</td><td><button class="copy" data-cmd="/plpvp">Copia</button></td></tr>
+            <tr><td class="k"><code>/schermo</code></td><td><span class="tag tag--gold">staff</span></td><td>Piazza uno schermo sottile</td><td><button class="copy" data-cmd="/schermo">Copia</button></td></tr>
+            <tr><td class="k"><code>/plschermi</code></td><td><span class="tag tag--gold">staff</span></td><td>Elenco degli schermi sottili con ID e distanza</td><td><button class="copy" data-cmd="/plschermi">Copia</button></td></tr>
+            <tr><td class="k"><code>/plschermorimuovi &lt;id&gt;</code></td><td><span class="tag tag--gold">staff</span></td><td>Rimuove uno schermo sottile</td><td><button class="copy" data-cmd="/plschermorimuovi ">Copia</button></td></tr>
+            <tr><td class="k"><code>/plpcreset &lt;id&gt;</code></td><td><span class="tag tag--gold">staff</span></td><td>Azzera la password di un PC</td><td><button class="copy" data-cmd="/plpcreset ">Copia</button></td></tr>
+            <tr><td class="k"><code>/pldiag</code></td><td><span class="tag tag--gold">staff</span></td><td>Controlla tabelle e collegamenti con polizia, EMS, officine, concessionarie, corriere, tribunale e governo</td><td><button class="copy" data-cmd="/pldiag">Copia</button></td></tr>
+            <tr><td class="k"><code>/plpulizia prova</code></td><td><span class="tag tag--gold">staff</span></td><td>Pulizia degli archivi; con <code>prova</code> la simula soltanto</td><td><button class="copy" data-cmd="/plpulizia prova">Copia</button></td></tr>
+            <tr><td class="k"><code>/plsupport</code></td><td><span class="tag tag--gold">staff</span></td><td>Ultime richieste arrivate ad assistenza@purelife.pl</td><td><button class="copy" data-cmd="/plsupport">Copia</button></td></tr>
+            <tr><td class="k"><code>/plmail &lt;id&gt;</code></td><td><span class="tag tag--gold">staff</span></td><td>Invia un'email di prova a un giocatore</td><td><button class="copy" data-cmd="/plmail ">Copia</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COLLEGAMENTI -->
+    <section class="sec" id="collegamenti">
+      <div class="eyebrow">Gestione</div>
+      <h2>Risorse collegate</h2>
+      <p class="lede">Il PC non duplica i sistemi del server: legge e scrive direttamente nei loro dati. Se una di queste risorse è spenta, la parte collegata del PC lo segnala.</p>
+      <div class="table-wrap" style="margin-top:24px">
+        <table>
+          <thead><tr><th>Risorsa</th><th>Cosa usa il PC</th></tr></thead>
+          <tbody>
+            <tr><td class="k">origen_police</td><td class="muted">Rapporti, multe, note, codice penale, turni, ricercati e pericolosi</td></tr>
+            <tr><td class="k">purelife_ems_tablet</td><td class="muted">Referti, ricette, cartelle, letti, prontuario dei farmaci</td></tr>
+            <tr><td class="k">purelife_workshop · purelife_meccanici</td><td class="muted">Officine, ordini di tuning, storico dei tagliandi</td></tr>
+            <tr><td class="k">purelife_dealership</td><td class="muted">Showroom, vendite e foto dei veicoli</td></tr>
+            <tr><td class="k">purelife_courier</td><td class="muted">Ordini, bolle e permessi del corriere</td></tr>
+            <tr><td class="k">purelife_bossmenu</td><td class="muted">App Azienda: dipendenti, stipendi, divise, fatture</td></tr>
+            <tr><td class="k">purelife_bank · prism-banking</td><td class="muted">Saldi, conti aziendali, movimenti, bonifici anche offline</td></tr>
+            <tr><td class="k">purelife_garage · jg-advancedgarages · vehicles_keys</td><td class="muted">Fermo al deposito, chiavi al nuovo proprietario, blocco dei passaggi dal garage</td></tr>
+            <tr><td class="k">sa_documenti</td><td class="muted">Patenti e foto per il sistema a punti</td></tr>
+            <tr><td class="k">rcore_prison</td><td class="muted">Pena residua sulla scheda cittadino</td></tr>
+            <tr><td class="k">lb-phone</td><td class="muted">Notifica sul telefono per le email</td></tr>
+            <tr><td class="k">ox_inventory · illenium-appearance · object_gizmo · purelife_staff</td><td class="muted">Oggetti e chiavetta, divise, posizionamento preciso, livelli dello staff</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note note--alert"><span class="note__k">Da sapere</span><span>Il reintegro anticipato della patente è permesso dal server solo a giudice, governo e staff, ma il pannello con quel pulsante oggi esiste solo nell'app Polizia, dove la polizia non può reintegrare: in pratica la sospensione finisce solo alla scadenza.</span></div>
+    </section>
+
+    <footer class="foot">
+      <span>PureLife OS · manuale per giocatori e staff</span>
+      <span>PureLife RP · Los Santos, San Andreas</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  // indice: evidenzia la sezione in lettura
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && byId[e.target.id]) {
+          links.forEach(function (a) { a.classList.remove('is-active'); });
+          byId[e.target.id].classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    document.querySelectorAll('section.sec').forEach(function (s) { io.observe(s); });
+  }
+
+  // comandi: ricerca
+  var input = document.getElementById('cmdSearch');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('#cmdTable tbody tr'));
+  var count = document.getElementById('cmdCount');
+  function filter() {
+    var q = (input.value || '').trim().toLowerCase();
+    var shown = 0;
+    rows.forEach(function (r) {
+      var hit = !q || r.textContent.toLowerCase().indexOf(q) !== -1;
+      r.hidden = !hit;
+      if (hit) shown++;
+    });
+    count.textContent = shown + (shown === 1 ? ' comando' : ' comandi');
+  }
+  input.addEventListener('input', filter);
+  filter();
+
+  // comandi: copia
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var txt = b.getAttribute('data-cmd');
+      var done = function () { b.textContent = 'Copiato'; setTimeout(function () { b.textContent = 'Copia'; }, 1400); };
+      try {
+        navigator.clipboard.writeText(txt).then(done, function () { b.textContent = txt; });
+      } catch (e) { b.textContent = txt; }
+    });
+  });
+})();
+</script>
